@@ -9,7 +9,7 @@ CACHEDIR = /usr/share/nginx/html/observatory-cache
 HOMEDIR = $(shell pwd)
 
 run:
-	node get-observatory-cache.js > $(CACHEDIR)/jimkang-cache.json
+	node get-observatory-cache.js > $(CACHEDIR)/jimkang-cache.json 2> cache-errors.log
 
 pushall:
 	git push origin master
