@@ -4,11 +4,12 @@ SSHCMD = ssh $(SMUSER)@$(SERVER)
 PRIVSSHCMD = ssh $(PRIVUSER)@$(SERVER)
 PROJECTNAME = observatory-cache
 APPDIR = /opt/$(PROJECTNAME)
+CACHEDIR = /usr/share/nginx/html/observatory-cache
 
 HOMEDIR = $(shell pwd)
 
 run:
-	node get-observatory-cache.js
+	node get-observatory-cache.js > $(CACHEDIR)/jimkang-cache.json
 
 pushall:
 	git push origin master
@@ -19,6 +20,7 @@ sync:
 		--exclude api-deed-stream \
 		--omit-dir-times --no-perms
 	$(SSHCMD) "cd /opt/$(PROJECTNAME) && npm install"
+	$(SSHCMD) "mkdir -p $(CACHEDIR)"
 
 set-up-remote-directories:
 	$(SSHCMD) "mkdir -p $(APPDIR)"
