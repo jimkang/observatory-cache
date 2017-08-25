@@ -7,9 +7,11 @@ APPDIR = /opt/$(PROJECTNAME)
 CACHEDIR = /usr/share/nginx/html/observatory-cache
 
 HOMEDIR = $(shell pwd)
+DATE = $(shell date +%Y-%m-%d)
 
 run:
-	node get-observatory-cache.js > $(CACHEDIR)/jimkang-cache.json 2> cache-errors.log
+	node get-observatory-cache.js > $(CACHEDIR)/jimkang-cache-$(DATE).json 2> cache-errors.log
+	cp $(CACHEDIR)/jimkang-cache-$(DATE).json $(CACHEDIR)/jimkang-cache.json
 
 pushall:
 	git push origin master
@@ -24,3 +26,6 @@ sync:
 
 set-up-remote-directories:
 	$(SSHCMD) "mkdir -p $(APPDIR)"
+
+check-errors:
+	$(SSHCMD) "tail $(APPDIR)/cache-errors.log"
