@@ -21,7 +21,7 @@ function streamFromProjectsSource() {
     onProject: writeProject,
     filterProject: projectsToCareAbout ? weCareAboutThisProject : undefined,
     dbName: 'api-deed-stream',
-    queryLogger: console.error
+    // queryLogger: console.error
   });
 
   githubProjectsSource.startStream(
