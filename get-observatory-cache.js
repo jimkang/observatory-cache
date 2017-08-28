@@ -5,7 +5,9 @@ var config = require('./config');
 var leveldown = require('leveldown');
 var request = require('request');
 
-var projectsToCareAbout = undefined;
+var projectsToIgnore = [
+  'github-file-test'
+];
 var deedCount = 0;
 
 function streamFromProjectsSource() {
@@ -19,7 +21,7 @@ function streamFromProjectsSource() {
     onNonFatalError: logError,
     onDeed: writeDeed,
     onProject: writeProject,
-    filterProject: projectsToCareAbout ? weCareAboutThisProject : undefined,
+    filterProject: projectsToIgnore ? weCareAboutThisProject : undefined,
     dbName: 'api-deed-stream',
     // queryLogger: console.error
   });
@@ -51,7 +53,7 @@ function logError(error) {
 }
 
 function weCareAboutThisProject(project) {
-  return projectsToCareAbout.indexOf(project.name) !== -1;
+  return projectsToIgnore.indexOf(project.name) === -1;
 }
 
 streamFromProjectsSource();
