@@ -12,6 +12,7 @@ STAMPED_FILENAME = $(CACHEDIR)/jimkang-cache-$(DATE).json
 FILENAME = $(CACHEDIR)/jimkang-cache.json
 
 run:
+	echo "$(DATE)\n" 2>> cache-errors.log
 	node get-observatory-cache.js > $(STAMPED_FILENAME) 2>> cache-errors.log
 	cp $(STAMPED_FILENAME) $(FILENAME)
 
