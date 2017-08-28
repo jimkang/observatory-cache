@@ -6,6 +6,7 @@ var leveldown = require('leveldown');
 var request = require('request');
 
 var projectsToCareAbout = undefined;
+var deedCount = 0;
 
 function streamFromProjectsSource() {
   var githubProjectsSource = GitHubProjectsSource({
@@ -19,7 +20,8 @@ function streamFromProjectsSource() {
     onDeed: writeDeed,
     onProject: writeProject,
     filterProject: projectsToCareAbout ? weCareAboutThisProject : undefined,
-    dbName: 'api-deed-stream'
+    dbName: 'api-deed-stream',
+    queryLogger: console.error
   });
 
   githubProjectsSource.startStream(
@@ -28,6 +30,7 @@ function streamFromProjectsSource() {
   );
 
   function writeDeed(deed) {
+    deedCount += 1;
     process.stdout.write(JSON.stringify(deed) + '\n');
   }
 
@@ -36,6 +39,7 @@ function streamFromProjectsSource() {
   }
 
   function onStreamEnd(error) {
+    console.error('deedCount', deedCount);
     if (error) {
       logError(error);
     }

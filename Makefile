@@ -8,10 +8,16 @@ CACHEDIR = /usr/share/nginx/html/observatory-cache
 
 HOMEDIR = $(shell pwd)
 DATE = $(shell date +%Y-%m-%d)
+STAMPED_FILENAME = $(CACHEDIR)/jimkang-cache-$(DATE).json
+FILENAME = $(CACHEDIR)/jimkang-cache.json
 
 run:
-	node get-observatory-cache.js > $(CACHEDIR)/jimkang-cache-$(DATE).json 2> cache-errors.log
-	cp $(CACHEDIR)/jimkang-cache-$(DATE).json $(CACHEDIR)/jimkang-cache.json
+	node get-observatory-cache.js > $(STAMPED_FILENAME) 2>> cache-errors.log
+	cp $(STAMPED_FILENAME) $(FILENAME)
+
+check-cache-files:
+	$(SSHCMD) "cd $(CACHEDIR) && find . -name '*.json' | xargs wc -l"
+	$(SSHCMD) "cd $(CACHEDIR) && ls -l"
 
 pushall:
 	git push origin master
