@@ -6,7 +6,14 @@ var leveldown = require('leveldown');
 var request = require('request');
 
 var projectsToIgnore = [
-  'github-file-test'
+  'github-file-test',
+  'asi-http-request',
+  'objectiveflickr',
+  'facebook-ios-sdk',
+  'ShakeKit',
+  'sublime-user-package',
+  'KIF',
+  'oauthconsumer'
 ];
 var deedCount = 0;
 
