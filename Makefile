@@ -7,14 +7,15 @@ APPDIR = /opt/$(PROJECTNAME)
 CACHEDIR = /usr/share/nginx/html/observatory-cache
 
 HOMEDIR = $(shell pwd)
-DATE = $(shell date +%Y-%m-%d)
-STAMPED_FILENAME = $(CACHEDIR)/jimkang-cache-$(DATE).json
+CURRENTDATE = $(shell /bin/date +%Y-%m-%d)
+STAMPED_FILENAME = $(CACHEDIR)/jimkang-cache-$(CURRENTDATE).json
 FILENAME = $(CACHEDIR)/jimkang-cache.json
 
 run:
-	echo "$(DATE)\n" 2>> cache-errors.log
+	echo "$(PATH)"
+	echo "$(CURRENTDATE)\n" 2>> cache-errors.log
 	node get-observatory-cache.js > $(STAMPED_FILENAME) 2>> cache-errors.log
-	cp $(STAMPED_FILENAME) $(FILENAME)
+	/bin/cp $(STAMPED_FILENAME) $(FILENAME)
 
 check-cache-files:
 	$(SSHCMD) "cd $(CACHEDIR) && find . -name '*.json' | xargs wc -l"
