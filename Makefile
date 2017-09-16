@@ -17,6 +17,9 @@ run:
 	node get-observatory-cache.js > $(STAMPED_FILENAME) 2>> cache-errors.log
 	/bin/cp $(STAMPED_FILENAME) $(FILENAME)
 
+run-remote:
+	$(SSHCMD) "cd /opt/$(PROJECTNAME) && make run"
+
 check-cache-files:
 	$(SSHCMD) "cd $(CACHEDIR) && find . -name '*.json' | xargs wc -l"
 	$(SSHCMD) "cd $(CACHEDIR) && ls -l"
