@@ -13,7 +13,26 @@ var projectsToIgnore = [
   'ShakeKit',
   'sublime-user-package',
   'KIF',
-  'oauthconsumer'
+  'oauthconsumer',
+  'javascript-karplus-strong',
+  'srv-request',
+  'word2vec',
+  'nearest-neighbor-test-data',
+  'annoy',
+  'protobuf',
+  'openelections-sources-ma',
+  'node-github',
+  'node-ci',
+  'forever-monitor',
+  'jimp',
+  'node-braque',
+  'timezones.json',
+  'restify-cors-middleware',
+  'prezto',
+  'paella',
+  'jamchops',
+  'level-browserify',
+  'node-webkit-screenshot'
 ];
 var deedCount = 0;
 
