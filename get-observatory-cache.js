@@ -48,14 +48,11 @@ function streamFromProjectsSource() {
     onDeed: writeDeed,
     onProject: writeProject,
     filterProject: projectsToIgnore ? weCareAboutThisProject : undefined,
-    dbName: 'api-deed-stream',
+    dbName: 'api-deed-stream'
     // queryLogger: console.error
   });
 
-  githubProjectsSource.startStream(
-    {sources: ['local', 'API']},
-    onStreamEnd
-  );
+  githubProjectsSource.startStream({ sources: ['local', 'API'] }, onStreamEnd);
 
   function writeDeed(deed) {
     deedCount += 1;

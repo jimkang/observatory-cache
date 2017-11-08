@@ -40,3 +40,6 @@ set-up-remote-directories:
 
 check-errors:
 	$(SSHCMD) "tail $(APPDIR)/cache-errors.log"
+
+prettier:
+	prettier --single-quote --write "**/*.js"
