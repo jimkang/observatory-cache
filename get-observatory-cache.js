@@ -34,9 +34,10 @@ var projectsToIgnore = [
   'level-browserify',
   'node-webkit-screenshot'
 ];
-var deedCount = 0;
 
 function streamFromProjectsSource() {
+  var emittedDeeds = {};
+
   var githubProjectsSource = GitHubProjectsSource({
     db: leveldown,
     request: request,
@@ -45,7 +46,7 @@ function streamFromProjectsSource() {
     username: 'jimkang',
     userEmail: 'jimkang@gmail.com',
     onNonFatalError: logError,
-    onDeed: writeDeed,
+    onDeed: storeDeed,
     onProject: writeProject,
     filterProject: projectsToIgnore ? weCareAboutThisProject : undefined,
     dbName: 'api-deed-stream'
@@ -54,9 +55,10 @@ function streamFromProjectsSource() {
 
   githubProjectsSource.startStream({ sources: ['local', 'API'] }, onStreamEnd);
 
-  function writeDeed(deed) {
-    deedCount += 1;
-    process.stdout.write(JSON.stringify(deed) + '\n');
+  // Right now, if multiple copies of the same deed are emitted, the last one
+  // one is the one that'll end up written to stdout.
+  function storeDeed(deed) {
+    emittedDeeds[deed.id] = deed;
   }
 
   function writeProject(project) {
@@ -64,9 +66,12 @@ function streamFromProjectsSource() {
   }
 
   function onStreamEnd(error) {
-    console.error('deedCount', deedCount);
+    console.error('deedCount', Object.keys(emittedDeeds));
     if (error) {
       logError(error);
+    }
+    for (var id in emittedDeeds) {
+      writeDeed(emittedDeeds[id]);
     }
   }
 }
@@ -77,6 +82,10 @@ function logError(error) {
 
 function weCareAboutThisProject(project) {
   return projectsToIgnore.indexOf(project.name) === -1;
+}
+
+function writeDeed(deed) {
+  process.stdout.write(JSON.stringify(deed) + '\n');
 }
 
 streamFromProjectsSource();

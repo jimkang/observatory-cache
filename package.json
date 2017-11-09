@@ -22,7 +22,7 @@
     "tape": "^4.6.0"
   },
   "dependencies": {
-    "github-projects-source": "^1.1.0",
+    "github-projects-source": "^1.1.2",
     "leveldown": "^1.7.2",
     "request": "^2.81.0"
   }
