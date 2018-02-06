@@ -32,7 +32,27 @@ var projectsToIgnore = [
   'paella',
   'jamchops',
   'level-browserify',
-  'node-webkit-screenshot'
+  'node-webkit-screenshot',
+  'godtributes-archive',
+  'spaceweirdnessbot',
+  'snakepeoplebot',
+  'improvebot',
+  'memberfacts',
+  'autocompleterap-archive',
+  'pokemon-nypl-archive',
+  'hail-ants-archive',
+  'linkfound',
+  'autocompletejok',
+  'ourmagickfuture',
+  '2020-candidates',
+  'monstersubtypes',
+  'businesswords-archive',
+  'cleromancer',
+  'contingency-messages',
+  'bot-in-the-street',
+  'demake-archive',
+  'hills-archive',
+  'fucking-shakespeare'
 ];
 
 function streamFromProjectsSource() {
