@@ -24,7 +24,7 @@ check-cache-files:
 	$(SSHCMD) "cd $(CACHEDIR) && find . -name '*.json' | xargs wc -l"
 	$(SSHCMD) "cd $(CACHEDIR) && ls -l"
 
-pushall:
+pushall: sync
 	git push origin master
 
 sync:
