@@ -52,7 +52,7 @@ var projectsToIgnore = [
   'bot-in-the-street',
   'demake-archive',
   'hills-archive',
-  'fucking-shakespeare'
+  'fuckingshakespeare'
 ];
 
 function streamFromProjectsSource() {
