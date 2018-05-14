@@ -4,7 +4,7 @@ SSHCMD = ssh $(SMUSER)@$(SERVER)
 PRIVSSHCMD = ssh $(PRIVUSER)@$(SERVER)
 PROJECTNAME = observatory-cache
 APPDIR = /opt/$(PROJECTNAME)
-CACHEDIR = /usr/share/nginx/html/observatory-cache
+CACHEDIR = /usr/share/nginx/html/smidgeo.com/observatory-cache
 
 HOMEDIR = $(shell pwd)
 CURRENTDATE = $(shell /bin/date +%Y-%m-%d)
