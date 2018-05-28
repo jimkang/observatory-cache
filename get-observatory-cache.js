@@ -7,7 +7,10 @@ var request = require('request');
 var sb = require('standard-bail')();
 
 function kickOff() {
-  request({ url: 'https://jimkang.com/observatory-meta/ignore.json', json: true }, sb(streamFromProjectsSource, logError));
+  request(
+    { url: 'https://jimkang.com/observatory-meta/ignore.json', json: true },
+    sb(streamFromProjectsSource, logError)
+  );
 }
 
 function streamFromProjectsSource(res, projectsToIgnore) {
@@ -51,14 +54,14 @@ function streamFromProjectsSource(res, projectsToIgnore) {
       writeDeed(emittedDeeds[id]);
     }
   }
+
+  function weCareAboutThisProject(project) {
+    return projectsToIgnore.indexOf(project.name) === -1;
+  }
 }
 
 function logError(error) {
   console.error(error);
-}
-
-function weCareAboutThisProject(project) {
-  return projectsToIgnore.indexOf(project.name) === -1;
 }
 
 function writeDeed(deed) {
