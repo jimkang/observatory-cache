@@ -4,63 +4,20 @@ var GitHubProjectsSource = require('github-projects-source');
 var config = require('./config');
 var leveldown = require('leveldown');
 var request = require('request');
+var sb = require('standard-bail')();
 
-var projectsToIgnore = [
-  'github-file-test',
-  'asi-http-request',
-  'objectiveflickr',
-  'facebook-ios-sdk',
-  'ShakeKit',
-  'sublime-user-package',
-  'KIF',
-  'oauthconsumer',
-  'javascript-karplus-strong',
-  'srv-request',
-  'word2vec',
-  'nearest-neighbor-test-data',
-  'annoy',
-  'protobuf',
-  'openelections-sources-ma',
-  'node-github',
-  'node-ci',
-  'forever-monitor',
-  'jimp',
-  'node-braque',
-  'timezones.json',
-  'restify-cors-middleware',
-  'prezto',
-  'paella',
-  'jamchops',
-  'level-browserify',
-  'node-webkit-screenshot',
-  'godtributes-archive',
-  'spaceweirdnessbot',
-  'snakepeoplebot',
-  'improvebot',
-  'memberfacts',
-  'autocompleterap-archive',
-  'pokemon-nypl-archive',
-  'hail-ants-archive',
-  'linkfound',
-  'autocompletejok',
-  'ourmagickfuture',
-  '2020-candidates',
-  'monstersubtypes',
-  'businesswords-archive',
-  'cleromancer',
-  'contingency-messages',
-  'bot-in-the-street',
-  'demake-archive',
-  'hills-archive',
-  'fuckingshakespeare'
-];
+function kickOff() {
+  request({ url: 'https://jimkang.com/observatory-meta/ignore.json', json: true }, sb(streamFromProjectsSource, logError));
+}
 
-function streamFromProjectsSource() {
+function streamFromProjectsSource(res, projectsToIgnore) {
   var emittedDeeds = {};
+
+  console.error('projectsToIgnore', projectsToIgnore);
 
   var githubProjectsSource = GitHubProjectsSource({
     db: leveldown,
-    request: request,
+    request,
     userAgent: 'observatory-cache',
     githubToken: config.githubToken,
     username: 'jimkang',
@@ -108,4 +65,4 @@ function writeDeed(deed) {
   process.stdout.write(JSON.stringify(deed) + '\n');
 }
 
-streamFromProjectsSource();
+kickOff();
