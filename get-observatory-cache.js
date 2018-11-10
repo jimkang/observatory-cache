@@ -5,15 +5,51 @@ var config = require('./config');
 var leveldown = require('leveldown');
 var request = require('request');
 var sb = require('standard-bail')();
+var bodyMover = require('request-body-mover');
+var CollectInChannel = require('collect-in-channel');
+var waterfall = require('async-waterfall');
+var curry = require('lodash.curry');
 
 function kickOff() {
-  request(
-    { url: 'https://jimkang.com/observatory-meta/ignore.json', json: true },
-    sb(streamFromProjectsSource, logError)
+  var channel = {};
+  var Collect = CollectInChannel({ channel });
+  waterfall(
+    [
+      curry(getJSONAsProp)(
+        {
+          url: 'https://jimkang.com/observatory-meta/ignore.json',
+          propToPassResultIn: 'projectsToIgnore'
+        },
+        {}
+      ),
+      Collect({ props: ['projectsToIgnore'] }),
+      curry(getJSONAsProp)(
+        {
+          url: 'https://jimkang.com/observatory-meta/projects.json',
+          propToPassResultIn: 'metadataForProjects'
+        }
+      ),
+      Collect({ props: ['metadataForProjects'] }),
+      streamFromProjectsSource
+    ],
+    logError
   );
 }
 
-function streamFromProjectsSource(res, projectsToIgnore) {
+function getJSONAsProp({ url, propToPassResultIn }, channel, done) {
+  var reqOpts = {
+    url,
+    json: true
+  };
+  request(reqOpts, bodyMover(sb(wrapResult)));
+
+  function wrapResult(result) {
+    // [This notation for keys is infuriating].
+    done(null, { [propToPassResultIn]: result });
+  }
+}
+
+function streamFromProjectsSource({ projectsToIgnore, metadataForProjects }) {
   var emittedDeeds = {};
 
   console.error('projectsToIgnore', projectsToIgnore);
@@ -42,6 +78,11 @@ function streamFromProjectsSource(res, projectsToIgnore) {
   }
 
   function writeProject(project) {
+    var metadata = metadataForProjects[project.name];
+    if (metadata) {
+      debugger;
+      Object.assign(project, metadata);
+    }
     process.stdout.write(JSON.stringify(project) + '\n');
   }
 
