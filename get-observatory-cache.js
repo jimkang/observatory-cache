@@ -29,7 +29,8 @@ function streamFromProjectsSource(res, projectsToIgnore) {
     onDeed: storeDeed,
     onProject: writeProject,
     filterProject: projectsToIgnore ? weCareAboutThisProject : undefined,
-    dbName: 'api-deed-stream'
+    dbName: 'api-deed-stream',
+    branchMetadataIsOn: 'gh-pages'
     // queryLogger: console.error
   });
 
