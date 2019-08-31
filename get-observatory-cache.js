@@ -8,7 +8,10 @@ var sb = require('standard-bail')();
 
 function kickOff() {
   request(
-    { url: 'https://jimkang.github.io/observatory-meta/ignore.json', json: true },
+    {
+      url: 'https://jimkang.github.io/observatory-meta/ignore.json',
+      json: true
+    },
     sb(streamFromProjectsSource, logError)
   );
 }
