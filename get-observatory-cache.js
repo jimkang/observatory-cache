@@ -18,6 +18,7 @@ function kickOff() {
 
 function streamFromProjectsSource(res, projectsToIgnore) {
   var emittedDeeds = {};
+  var projects = {};
 
   console.error('projectsToIgnore', projectsToIgnore);
 
@@ -30,7 +31,7 @@ function streamFromProjectsSource(res, projectsToIgnore) {
     userEmail: 'jimkang@gmail.com',
     onNonFatalError: logError,
     onDeed: storeDeed,
-    onProject: writeProject,
+    onProject: storeProject,
     filterProject: projectsToIgnore ? weCareAboutThisProject : undefined,
     dbName: 'api-deed-stream',
     branchMetadataIsOn: 'gh-pages'
@@ -45,14 +46,17 @@ function streamFromProjectsSource(res, projectsToIgnore) {
     emittedDeeds[deed.id] = deed;
   }
 
-  function writeProject(project) {
-    process.stdout.write(JSON.stringify(project) + '\n');
+  function storeProject(project) {
+    projects[project.id] = project;
   }
 
   function onStreamEnd(error) {
     console.error('deedCount', Object.keys(emittedDeeds));
     if (error) {
       logError(error);
+    }
+    for (var projectId in projects) {
+      writeProject(projects[projectId]);
     }
     for (var id in emittedDeeds) {
       writeDeed(emittedDeeds[id]);
@@ -70,6 +74,10 @@ function logError(error) {
 
 function writeDeed(deed) {
   process.stdout.write(JSON.stringify(deed) + '\n');
+}
+
+function writeProject(project) {
+  process.stdout.write(JSON.stringify(project) + '\n');
 }
 
 kickOff();
