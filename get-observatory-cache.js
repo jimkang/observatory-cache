@@ -1,22 +1,32 @@
-/* global process */
+/* global process, Buffer */
 
 var GitHubProjectsSource = require('github-projects-source');
 var config = require('./config');
 var leveldown = require('leveldown');
 var request = require('request');
+var GitHubFile = require('github-file');
 var sb = require('standard-bail')();
 
 function kickOff() {
-  request(
-    {
-      url: 'https://jimkang.github.io/observatory-meta/ignore.json',
-      json: true
-    },
-    sb(streamFromProjectsSource, logError)
-  );
+  var githubFile = GitHubFile({
+    branch: 'gh-pages',
+    repo: 'observatory-meta',
+    gitRepoOwner: 'jimkang',
+    gitToken: config.githubToken,
+    shouldSetUserAgent: true,
+    encodeInBase64,
+    decodeFromBase64,
+    request
+  });
+
+  githubFile.get('ignore.json', sb(streamFromProjectsSource, logError));
 }
 
-function streamFromProjectsSource(res, projectsToIgnore) {
+function streamFromProjectsSource(projectsToIgnoreGitFile) {
+  var projectsToIgnore = [];
+  if (projectsToIgnoreGitFile && projectsToIgnoreGitFile.content) {
+    projectsToIgnore = JSON.parse(projectsToIgnoreGitFile.content);
+  }
   var emittedDeeds = {};
   var projects = {};
 
@@ -81,3 +91,10 @@ function writeProject(project) {
 }
 
 kickOff();
+
+function encodeInBase64(s) {
+  return Buffer.from(s, 'utf8').toString('base64');
+}
+function decodeFromBase64(s) {
+  return Buffer.from(s, 'base64').toString('utf8');
+}

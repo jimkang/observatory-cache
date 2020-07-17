@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "github-projects-source": "^1.1.5",
-    "leveldown": "^1.7.2",
+    "leveldown": "^5.6.0",
     "request": "^2.87.0"
   }
 }
