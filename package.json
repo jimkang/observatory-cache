@@ -18,11 +18,12 @@
   },
   "homepage": "https://github.com/jimkang/observatory-cache",
   "devDependencies": {
-    "eslint": "^7.4.0",
+    "eslint": "^7.29.0",
+    "minimist": "^1.2.5",
     "tape": "^4.6.0"
   },
   "dependencies": {
-    "github-projects-source": "^1.1.5",
+    "github-projects-source": "^1.1.6",
     "leveldown": "^5.6.0",
     "request": "^2.87.0"
   }
