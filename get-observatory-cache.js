@@ -16,7 +16,7 @@ function kickOff() {
     shouldSetUserAgent: true,
     encodeInBase64,
     decodeFromBase64,
-    request
+    request,
   });
 
   githubFile.get('ignore.json', sb(streamFromProjectsSource, logError));
@@ -30,7 +30,7 @@ function streamFromProjectsSource(projectsToIgnoreGitFile) {
   var emittedDeeds = {};
   var projects = {};
 
-  console.error('projectsToIgnore', projectsToIgnore);
+  console.error('projectsToIgnore', JSON.stringify(projectsToIgnore, null, 2));
 
   var githubProjectsSource = GitHubProjectsSource({
     db: leveldown,
@@ -44,7 +44,7 @@ function streamFromProjectsSource(projectsToIgnoreGitFile) {
     onProject: storeProject,
     filterProject: projectsToIgnore ? weCareAboutThisProject : undefined,
     dbName: 'api-deed-stream',
-    branchMetadataIsOn: 'gh-pages'
+    branchMetadataIsOn: 'gh-pages',
     // queryLogger: console.error
   });
 
