@@ -19,7 +19,7 @@
   "homepage": "https://github.com/jimkang/observatory-cache",
   "devDependencies": {
     "eslint": "^7.29.0",
-    "minimist": "^1.2.5",
+    "minimist": "^1.2.6",
     "tape": "^4.6.0"
   },
   "dependencies": {
